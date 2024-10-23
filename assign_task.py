@@ -1,5 +1,7 @@
 def assign_tasks(factor, arrival, bonus, reward, duration, time_bonus):
 
+    ARRAYTORETURN = []
+
 
     processorArray = []
 
@@ -28,20 +30,37 @@ def assign_tasks(factor, arrival, bonus, reward, duration, time_bonus):
 
     tick = 0
 
-    while tick <= maxTick:
-
-        noTasksToAssign = False
+    while factor != []:
 
 
-        while noTasksToAssign:
+        processorsAvailable = []
+
+        for i in range(0, len(processorArray)):
+
+            if processorArray[i] <= tick:
+
+                processorsAvailable.append(i)
+
+
+        arrivalTimesBeforeNow = []
+
+        for i in range(0, len(factor)):
+
+            if arrival[i] <= tick:
+
+                arrivalTimesBeforeNow.append(i)
+
+
+        while arrivalTimesBeforeNow != [] or processorsAvailable != []:
+
 
             maxScore = 0
 
-            maxScoreIndex = 0
+            maxScoreIndex = -1
 
             bestProcessorIndex = -1
 
-            for i in range(0, len(factor)): # Checks all tasks for their scores.
+            for i in range(0, len(arrivalTimesBeforeNow)): # Checks all tasks for their scores.
 
                 # Checks for the score produced for each task by processor.
 
@@ -73,6 +92,14 @@ def assign_tasks(factor, arrival, bonus, reward, duration, time_bonus):
             processorArray[bestProcessorIndex] = tick + duration[maxScoreIndex]
 
 
+            # Processor no longer available.
+
+            processorsAvailable.remove(processorsAvailable[bestProcessorIndex])
+
+
+            ARRAYTORETURN[maxScoreIndex] = (tick, factor[bestProcessorIndex])
+
+
             factor.remove(factor[maxScoreIndex])
 
             arrival.remove(arrival[maxScoreIndex])
@@ -85,12 +112,8 @@ def assign_tasks(factor, arrival, bonus, reward, duration, time_bonus):
 
             time_bonus.remove[time_bonus[maxScoreIndex]]
 
+
+    return ARRAYTORETURN            
+
     
-
-
-
-
-
-    tick += 1
-
 
